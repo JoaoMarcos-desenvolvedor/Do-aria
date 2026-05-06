@@ -1,1 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thalys Brownie | Delícias Artesanais</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
+    <style>
+        :root {
+            --cor-primaria: #4a2c2a;
+            --cor-secundaria: #d84315;
+            --cor-fundo: #fdf8f5;
+            --branco: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--cor-fundo);
+            color: var(--cor-primaria);
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* --- ANIMAÇÃO DE SURGIMENTO --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- CABEÇALHO & MENU --- */
+        header {
+            background: var(--branco);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 2000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: var(--cor-primaria);
+            z-index: 2100;
+        }
+
+        .logo span { color: var(--cor-secundaria); }
+
+        /* Menu Desktop */
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--cor-primaria);
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-menu a:hover { color: var(--cor-secundaria); }
+
+        /* Ícone Hamburguer */
+        .btn-mobile {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 2100;
+            padding: 10px;
+        }
+
+        .hamburguer {
+            display: block;
+            width: 25px;
+            border-top: 3px solid var(--cor-primaria);
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .hamburguer::after, .hamburguer::before {
+            content: '';
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: var(--cor-primaria);
+            margin-top: 5px;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        /* Animação X do Menu */
+        .btn-mobile.active .hamburguer { border-top-color: transparent; }
+        .btn-mobile.active .hamburguer::before { transform: rotate(135deg); }
+        .btn-mobile.active .hamburguer::after { transform: rotate(-135deg); top: -8px; }
+
+        /* --- HERO --- */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-content h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 8vw, 4rem); }
+
+        .btn-cta {
+            display: inline-block;
+            background: var(--cor-secundaria);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            margin-top: 25px;
+            transition: 0.3s;
+        }
+
+        /* --- VITRINE --- */
+        .vitrine { padding: 100px 5%; max-width: 1200px; margin: 0 auto; }
+        .vitrine h2 { text-align: center; margin-bottom: 50px; font-size: 2.5rem; font-family: 'Playfair Display', serif;}
+
+        .grid-produtos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--branco);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .img-box {
+            width: 100%;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+        .preco {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--cor-secundaria);
+            display: block;
+            margin: 10px 0;
+        }
+
+        .btn-pedido {
+            background: var(--cor-primaria);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        footer { background: var(--cor-primaria); color: white; padding: 40px; text-align: center; }
+
+        /* --- MEDIA QUERIES (MOBILE) --- */
+        @media (max-width: 768px) {
+            .btn-mobile { display: block; }
+            
+            .nav-menu {
+                display: block;
+                position: fixed;
+                width: 100%;
+                height: 0;
+                top: 60px;
+                right: 0;
+                background: var(--branco);
+                z-index: 1000;
+                transition: 0.5s;
+                visibility: hidden;
+                overflow-y: hidden;
+                text-align: center;
+            }
+
+            .nav-menu.active {
+                height: calc(100vh - 60px);
+                visibility: visible;
+                padding-top: 50px;
+            }
+
+            .nav-menu li { margin: 20px 0; }
+            .nav-menu a { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">Thalys <span>Brownie</span></div>
+            
+            <button class="btn-mobile" id="btn-mobile">
+                <span class="hamburguer"></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#produtos">Cardápio</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Thalys Brownie</h1>
+            <p>O sabor que transforma o seu dia.</p>
+            <a href="#produtos" class="btn-cta">Ver Cardápio</a>
+        </div>
+    </section>
+
+    <section id="produtos" class="vitrine">
+        <h2>Nossas Delícias</h2>
+        <div class="grid-produtos">
+            
+            <div class="card reveal">
+                <div class="img-box" style="background-image: url('https://images.unsplash.com/photo-1543218191-0cd5b7bb318a?auto=format&fit=crop&w=500&q=80');"></div>
+                <h3>Brownie Clássico</h3>
+                <span class="preco">R$ 8,50</span>
+                <button class="btn-pedido" onclick="pedir('Brownie Clássico')">Pedir no WhatsApp</button>
+            </div>
+
+            <div class="card reveal">
+                <div class="img-box" style="background-image: url('https://images.unsplash.com/photo-1570476922354-81227cdbb76c?auto=format&fit=crop&w=500&q=80');"></div>
+                <h3>Cento Brigadeiros</h3>
+                <span class="preco">R$ 130,00</span>
+                <button class="btn-pedido" onclick="pedir('Cento de Brigadeiros')">Pedir no WhatsApp</button>
+            </div>
+
+            <div class="card reveal">
+                <div class="img-box" style="background-image: url('https://images.unsplash.com/photo-1589119908995-c6837fa14848?auto=format&fit=crop&w=500&q=80');"></div>
+                <h3>Brownie Nutella</h3>
+                <span class="preco">R$ 12,00</span>
+                <button class="btn-pedido" onclick="pedir('Brownie Nutella')">Pedir no WhatsApp</button>
+            </div>
+
+            <div class="card reveal">
+                <div class="img-box" style="background-image: url('https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=500&q=80');"></div>
+                <h3>Donut Gourmet</h3>
+                <span class="preco">R$ 10,00</span>
+                <button class="btn-pedido" onclick="pedir('Donut Gourmet')">Pedir no WhatsApp</button>
+            </div>
+
+        </div>
+    </section>
+
+    <footer id="contato">
+        <p><strong>Thalys Brownie</strong></p>
+        <p>© 2026 - Brasília/DF</p>
+    </footer>
+
+    <script>
+        // --- LOGICA DO MENU HAMBURGUER ---
+        const btnMobile = document.getElementById('btn-mobile');
+        const navMenu = document.getElementById('nav-menu');
+
+        function toggleMenu(event) {
+            if (event.type === 'touchstart') event.preventDefault();
+            navMenu.classList.toggle('active');
+            btnMobile.classList.toggle('active');
+        }
+
+        btnMobile.addEventListener('click', toggleMenu);
+        btnMobile.addEventListener('touchstart', toggleMenu);
+
+        // Fecha o menu ao clicar em um link
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                btnMobile.classList.remove('active');
+            });
+        });
+
+        // --- ANIMAÇÃO DE SURGIMENTO (INTERSECTION OBSERVER) ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // WHATSAPP
+        function pedir(produto) {
+            const tel = "5561900000000";
+            const msg = window.encodeURIComponent(`Olá! Quero pedir: ${produto}`);
+            window.open(`https://wa.me/${tel}?text=${msg}`, '_blank');
+        }
+    </script>
+</body>
+  </html>
